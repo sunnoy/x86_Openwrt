@@ -9,7 +9,12 @@
 
 密码： password
 
-[点击下载固件](https://github.com/taanng/x86_Openwrt/releases) 
+# config测试
+
+1、默认情况只开启 qcow2 编译通过
+2、开启 qcow2 基础上添加包
+
+
 
 
 ### 参考

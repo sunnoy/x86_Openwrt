@@ -131,8 +131,8 @@ jobs:
       if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       run: |
         cd $WORK_DIR/bin/targets/*/*
+        ls -lh
         shopt -s extglob
-        rm -rf !(*.gz)
         rm -rf *rootfs.*
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "status=success" >> $GITHUB_OUTPUT
