@@ -130,8 +130,8 @@ jobs:
       run: |
         cd $WORK_DIR/bin/targets/*/*
         shopt -s extglob
-        rm -rf !(*.gz)
-        rm -rf *rootfs.*
+        ls -lh
+
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "status=success" >> $GITHUB_OUTPUT
 
