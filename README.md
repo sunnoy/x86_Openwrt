@@ -29,6 +29,9 @@
 
 cp /mnt/immortalwrt/.config X86/immortalwrt 
 cp /mnt/lede/.config X86/lede 
+cp /mnt/openwrt/.config X86/openwrt
+cp /mnt/lienol-openwrt/.config X86/Lienol 
+
 
 git config --global user.email "ttzhsz@163.com"
 git config --global user.name "sunnoy"
