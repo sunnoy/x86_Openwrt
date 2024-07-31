@@ -24,3 +24,8 @@
 - [Lean's OpenWrt](https://github.com/coolsnowwolf/lede)
 - [immortalwrt](https://github.com/immortalwrt/immortalwrt)
 
+
+
+
+cp /mnt/immortalwrt/.config X86/immortalwrt 
+cp /mnt/lede/.config X86/lede 
