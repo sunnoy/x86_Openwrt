@@ -99,37 +99,36 @@ jobs:
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
         sudo timedatectl set-timezone "$TZ"
-        sudo mkdir -p /workdir
-        sudo chown $USER:$GROUPS /workdir
+
+        sudo chown $USER:$GROUPS $GITHUB_WORKSPACE
 
     - name: Clone source code
-      working-directory: /workdir
+      working-directory: ./
       run: |
         export
         df -hT $PWD
-        git clone $REPO_URL -b $REPO_BRANCH $WORK_DIR
-        ln -sf /workdir/$WORK_DIR $GITHUB_WORKSPACE/$WORK_DIR
+        git clone --depth=1 $REPO_URL -b $REPO_BRANCH openwrt
 
     - name: Load custom feeds
       run: |
-        [ -e $FEEDS_CONF ] && mv $FEEDS_CONF $WORK_DIR/feeds.conf.default
+        [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
         chmod +x $DIY_P1_SH
-        cd $WORK_DIR
+        cd openwrt
         $GITHUB_WORKSPACE/$DIY_P1_SH
 
     - name: Update feeds
-      run: cd $WORK_DIR && ./scripts/feeds update -a
+      run: cd openwrt && ./scripts/feeds update -a
 
     - name: Install feeds
       run: | 
-        cd $WORK_DIR && ./scripts/feeds install -a
+        cd openwrt && ./scripts/feeds install -a
 
     - name: Load custom configuration
       run: |
-        [ -e files ] && mv files $WORK_DIR/files
-        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE $WORK_DIR/.config
+        [ -e files ] && mv files openwrt/files
+        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
         chmod +x $DIY_P2_SH
-        cd $WORK_DIR
+        cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
 
     - name: SSH connection to Actions
@@ -142,7 +141,7 @@ jobs:
     - name: Download package
       id: package
       run: |
-        cd $WORK_DIR
+        cd openwrt
         make defconfig
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
@@ -151,7 +150,7 @@ jobs:
     - name: Compile the firmware
       id: compile
       run: |
-        cd $WORK_DIR
+        cd openwrt
         echo -e "$(nproc) thread compile"
         make V=s -j$(nproc)
         echo "status=success" >> $GITHUB_OUTPUT
@@ -168,16 +167,17 @@ jobs:
       if: steps.compile.outputs.status == 'success' && env.UPLhomeproxyOAD_BIN_DIR == 'true'
       with:
         name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
-        path: $WORK_DIR/bin
+        path: openwrt/bin
 
     - name: Organize files
       id: organize
       if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       run: |
-        cd $WORK_DIR/bin/targets/*/*
-        shopt -s extglob
+        cd openwrt/bin/targets/*/*
         ls -lh
-
+        rm -rf packages
+        shopt -s extglob
+       
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "status=success" >> $GITHUB_OUTPUT
 
@@ -218,7 +218,7 @@ jobs:
       uses: dev-drprasad/delete-older-releases@v0.3.3
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
-        keep_latest: 6
+        keep_latest: 3
         delete_tags: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
