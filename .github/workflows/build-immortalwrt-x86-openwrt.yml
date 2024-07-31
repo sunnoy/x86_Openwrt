@@ -105,6 +105,7 @@ jobs:
     - name: Clone source code
       working-directory: /workdir
       run: |
+        export
         df -hT $PWD
         git clone $REPO_URL -b $REPO_BRANCH $WORK_DIR
         ln -sf /workdir/$WORK_DIR $GITHUB_WORKSPACE/$WORK_DIR
