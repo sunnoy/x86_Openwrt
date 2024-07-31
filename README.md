@@ -29,3 +29,6 @@
 
 cp /mnt/immortalwrt/.config X86/immortalwrt 
 cp /mnt/lede/.config X86/lede 
+
+  git config --global user.email "ttzhsz@163.com"
+  git config --global user.name "sunnoy"
