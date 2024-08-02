@@ -123,6 +123,8 @@ jobs:
 
     - name: Install feeds
       run: | 
+        git clone --depth 1 https://github.com/vernesong/OpenClash.git
+        cp -r OpenClash/luci-app-openclash openwrt/package/
         cd openwrt && ./scripts/feeds install -a
 
         rm -rf feeds/packages/lang/golang
