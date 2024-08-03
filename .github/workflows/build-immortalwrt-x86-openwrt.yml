@@ -11,8 +11,8 @@
 name: Build immortalwrt X86 OpenWrt
 
 on:
-  repository_dispatch:
-    types: [update_source_code]
+#  repository_dispatch:
+#    types: [update_source_code]
   workflow_dispatch:
     inputs:
       ssh:
@@ -21,7 +21,7 @@ on:
         default: 'false'
   schedule:
     - cron: 0 20 * * *
-  push:
+#  push:
 
 env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt
