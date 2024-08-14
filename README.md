@@ -25,6 +25,12 @@
 - [immortalwrt](https://github.com/immortalwrt/immortalwrt)
 
 
+cp -r ../OpenClash-0.46.014-beta/luci-app-openclash package/
+
+./scripts/feeds update -a
+./scripts/feeds install -a
+
+make defconfig
 
 
 cp /mnt/immortalwrt/.config X86/immortalwrt 
@@ -35,21 +41,3 @@ cp /mnt/lienol-openwrt/.config X86/Lienol
 
 git config --global user.email "ttzhsz@163.com"
 git config --global user.name "sunnoy"
-
-
-make defconfig
-
-echo 'src-git kenzo https://github.com/kenzok8/openwrt-packages' >>feeds.conf.default
-echo 'src-git small https://github.com/kenzok8/small' >>feeds.conf.default
-
-
-./scripts/feeds update -a
-
-./scripts/feeds install -a
-
-echo 'src-git kenzo https://github.com/kenzok8/openwrt-packages' >>feeds.conf.default
-
-./scripts/feeds update -a
-
-./scripts/feeds install -p kenzo luci-app-openclash
-
