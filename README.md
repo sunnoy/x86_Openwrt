@@ -25,12 +25,19 @@
 - [immortalwrt](https://github.com/immortalwrt/immortalwrt)
 
 
-cp -r ../OpenClash-0.46.014-beta/luci-app-openclash package/
+
+git clone -b v23.05.3 --single-branch https://github.com/immortalwrt/immortalwrt
+
+
+ git clone --depth 1 https://github.com/vernesong/OpenClash.git
+cp -r OpenClash/luci-app-openclash immortalwrt/package/
+
 
 ./scripts/feeds update -a
 ./scripts/feeds install -a
 
-make defconfig
+
+make meunconfig
 
 
 cp /mnt/immortalwrt/.config X86/immortalwrt 
